@@ -1,7 +1,3 @@
-#Ronaldo Dias Benedito = 11231102442
-#Antonio Pedro dos Reis Neto = 11231101959
-#Arthur Andrade Rodrigues = 11231102696
-
 import os
 import time
 import json
