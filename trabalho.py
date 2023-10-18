@@ -1,7 +1,7 @@
 import os
 import time
 import json
-
+#criando a classe aluno
 class Aluno:
     def __init__(self, idade=0, altura=0.0, peso=0.0, nome="", rgm=0):
         self.idade = idade
@@ -9,7 +9,7 @@ class Aluno:
         self.peso = peso
         self.nome = nome
         self.rgm = rgm
-
+#criando o calculo do IMC
     def imc(self):
         resultado = self.peso / (self.altura * self.altura)
         if resultado >= 40.0:
@@ -24,7 +24,7 @@ class Aluno:
             return "Peso Normal"
         else:
             return "Abaixo do peso normal"
-
+#colocando os atributos em um dicionario e salvando em um json
     def serializar(self):
         dic = {
             "nome": self.nome,
@@ -33,9 +33,10 @@ class Aluno:
             "peso": self.peso,
             "rgm": self.rgm
         }
+#converte o dicionario em uma string json formatada
         texto_json = json.dumps(dic, indent=3)
         return texto_json
-
+#criando o metodo de atualizacao do json
     def atualizarJSON(self, texto_json):
         dic = json.loads(texto_json)
         self.nome = dic.get("nome", "")
@@ -43,14 +44,14 @@ class Aluno:
         self.altura = dic.get("altura", 0.0)
         self.peso = dic.get("peso", 0.0)
         self.rgm = dic.get("rgm", 0)
-
+#criando a classe professor
 class Professor:
     def __init__(self, matricula="", nome="", idade=0, altura=0.0):
         self.matricula = matricula
         self.nome = nome
         self.idade = idade
         self.altura = altura
-
+#serializando os atributos da classe professor
     def Serializar(self):
         dic = {
             "matricula": self.matricula,
@@ -60,17 +61,17 @@ class Professor:
         }
         texto_json = json.dumps(dic, indent=3)
         return texto_json
-
+#criando o metodo de atualizacao do json para professor
     def AtualizarJSON(self, texto_json):
         dic = json.loads(texto_json)
         self.matricula = dic.get("matricula", "")
         self.nome = dic.get("nome", "")
         self.idade = dic.get("idade", 0)
         self.altura = dic.get("altura", 0.0)
-
+#Transformar as informacoes em uma so frase para criar uma descricao facil sobre a pessoa. (util para depuracao, logging ou simplesmente para exibir informações sobre o objeto de uma maneira legível para humanos.)
     def __str__(self):
         return f"Matrícula: {self.matricula}, Nome: {self.nome}, Idade: {self.idade}, Altura: {self.altura}"
-
+#criando a classe disciplina
 class Disciplina:
     def __init__(self, codigo="", nome="", cargaHoraria=0, turma=0, notaMinima=0.0):
         self.codigo = codigo
@@ -89,7 +90,7 @@ class Disciplina:
         }
         texto_json = json.dumps(dic, indent=3)
         return texto_json
-
+#fazer o parsing da string json "texto_json". Atribui o valor das chaves e insere aos atributos respectivos, caso nao exista atribui o valor 0.
     def Deserializar(self, texto_json):
         dic = json.loads(texto_json)
         self.codigo = dic.get("codigo", "")
@@ -97,7 +98,7 @@ class Disciplina:
         self.cargaHoraria = dic.get("cargaHoraria", 0)
         self.turma = dic.get("turma", 0)
         self.notaMinima = dic.get("notaMinima", 0.0)
-
+#cria os metodos necessarios
 class ModeloAcademico:
     def __init__(self):
         self.listaAlunos = []
@@ -107,15 +108,15 @@ class ModeloAcademico:
         self.RecuperarAlunos()
         self.RecuperarProfessores()
         self.RecuperarDisciplinas()
-
+#salva as informacoes registradas em um arquivo json chamado "alunos.json"
     def SalvarAlunos(self):
         lista = [a.serializar() for a in self.listaAlunos]
         with open("alunos.json", 'w') as arquivo:
             json.dump(lista, arquivo, indent=3)
         print("Alunos salvos!")
-
+#busca os alunos do arquivo "alunos.json" e para cada aluno, cria um novo com as mesmas informacoes
     def RecuperarAlunos(self):
-        self.listaAlunos.clear()
+        self.listaAlunos.clear()    
         try:
             with open("alunos.json", 'r') as arquivo:
                 lista_de_jsons_text = json.load(arquivo)
@@ -125,13 +126,13 @@ class ModeloAcademico:
                     self.listaAlunos.append(a)
         except FileNotFoundError:
             pass
-
+#faz o mesmo que o metodo salvarAlunos
     def SalvarProfessores(self):
         lista = [p.Serializar() for p in self.listaProfessores]
         with open("professores.json", 'w') as arquivo:
             json.dump(lista, arquivo, indent=3)
         print("Professores salvos!")
-
+#faz o mesmo que o metodo recuperarAlunos
     def RecuperarProfessores(self):
         self.listaProfessores.clear()
         try:
@@ -143,13 +144,13 @@ class ModeloAcademico:
                     self.listaProfessores.append(p)
         except FileNotFoundError:
             pass
-
+#faz o mesmo que o metodo salvarAlunos
     def SalvarDisciplinas(self):
         lista = [d.Serializar() for d in self.listaDisciplinas]
         with open("disciplinas.json", 'w') as arquivo:
             json.dump(lista, arquivo, indent=3)
         print("Disciplinas salvas!")
-
+#faz o mesmo que o metodo recuperarAlunos
     def RecuperarDisciplinas(self):
         self.listaDisciplinas.clear()
         try:
@@ -161,7 +162,7 @@ class ModeloAcademico:
                     self.listaDisciplinas.append(d)
         except FileNotFoundError:
             pass
-        
+#metodo para registrar um novo aluno
     def cadastrarAluno(self):
         idade = int(input("Digite a idade:"))
         altura = float(input("Digite a altura:"))
@@ -172,8 +173,7 @@ class ModeloAcademico:
         self.listaAlunos.append(aluno)
         self.SalvarAlunos()
         return aluno
-
-
+#metodo para registrar um professor
     def cadastrarProfessor(self):
         matricula = input("Digite a matrícula:")
         nome = input("Digite o nome:")
@@ -183,7 +183,7 @@ class ModeloAcademico:
         self.listaProfessores.append(professor)
         self.SalvarProfessores()
         return professor
-
+#mettodo par registrar uma disciplina
     def cadastrarDisciplina(self):
         codigo = input("Digite o código:")
         nome = input("Digite o nome:")
@@ -194,7 +194,7 @@ class ModeloAcademico:
         self.listaDisciplinas.append(disciplina)
         self.SalvarDisciplinas()
         return disciplina
-
+#mostra os alunos que ja foram registrados
     def imprimirAlunos(self):
         print("|Alunos:")
         print("|Nome|Altura|Idade|Peso|RGM|")
@@ -203,7 +203,7 @@ class ModeloAcademico:
             print(a.nome, "|", a.idade, "|", a.altura, "|", a.peso, "|", a.rgm)
         print("-------------------------------")
         self.SalvarAlunos()
-
+#mostra os professores registrados
     def imprimirProfessores(self):
         print("|Professores:")
         print("|Matrícula|Nome|Idade|Altura|")
@@ -212,7 +212,7 @@ class ModeloAcademico:
             print(p.matricula, "|", p.nome, "|", p.idade, "|", p.altura)
         print("-------------------------------")
         self.SalvarProfessores()
-
+#mostra as disciplinas registradas
     def imprimirDisciplinas(self):
         print("|Disciplinas:")
         print("|Código|Nome|Carga Horária|Turma|Nota Mínima|")
@@ -221,7 +221,7 @@ class ModeloAcademico:
             print(d.codigo, "|", d.nome, "|", d.cargaHoraria, "|", d.turma, "|", d.notaMinima)
         print("-------------------------------")
         self.SalvarDisciplinas()
-
+#consulta os alunos com o peso menor que 65
     def Consulta_Peso(self):
         contador = 0
         for a in self.listaAlunos:
