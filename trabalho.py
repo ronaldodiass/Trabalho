@@ -113,7 +113,7 @@ class ModeloAcademico:
         lista = [a.serializar() for a in self.listaAlunos]
         with open("alunos.json", 'w') as arquivo:
             json.dump(lista, arquivo, indent=3)
-        print("Alunos salvos!")
+            
 #busca os alunos do arquivo "alunos.json" e para cada aluno, cria um novo com as mesmas informacoes
     def RecuperarAlunos(self):
         self.listaAlunos.clear()    
@@ -172,6 +172,7 @@ class ModeloAcademico:
         aluno = Aluno(idade, altura, peso, nome, rgm)
         self.listaAlunos.append(aluno)
         self.SalvarAlunos()
+        print("Alunos salvos!")
         return aluno
 #metodo para registrar um professor
     def cadastrarProfessor(self):
